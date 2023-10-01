@@ -1,21 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnSystem : MonoBehaviour
 {
     public int numberOfPieces;
-    public GameObject[] prefabs;
     public Truck[] trucks;
 
     [Header("Properties")]
     public int boxesPerTruck = 3;
-    public float minTime = 20;
-    public float maxTime = 40;
+    public float randomMinTime = 20;
+    public float randomMaxTime = 40;
     public float truckExpireTime = 20;
 
 
-    protected List<int> randomSequence;
+    protected List<int> randomSequence = new List<int>();
+
+    void Start()
+    {
+        StartGame();
+    }
+
+    void StartGame()
+    {
+        MakeNextTruckAppear();
+    }
 
     public int GetNextRandom()
     {
@@ -41,9 +51,8 @@ public class SpawnSystem : MonoBehaviour
         {
             int nextTruck = possibleTrucks[Random.Range(0,possibleTrucks.Count)];
             SetupTruck(nextTruck);
-
-
         }
+        StartCoroutine(SpawnNewTruckSoon(Random.Range(randomMinTime,randomMaxTime)));
     }
 
     protected void SetupTruck(int index)
@@ -75,5 +84,11 @@ public class SpawnSystem : MonoBehaviour
             list[k] = list[n];  
             list[n] = value;  
         }  
+    }
+
+    protected IEnumerator SpawnNewTruckSoon(float soon)
+    {
+        yield return new WaitForSeconds(soon);
+        MakeNextTruckAppear();
     }
 }

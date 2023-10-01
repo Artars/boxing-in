@@ -62,6 +62,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateClockwise"",
+                    ""type"": ""Button"",
+                    ""id"": ""66ffe818-b7e4-4f41-aa2b-f4f81b2a2a3f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateAntiClockwise"",
+                    ""type"": ""Button"",
+                    ""id"": ""c8ab440d-ab3b-4bee-ba67-6b1ed0d4465f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -306,6 +324,50 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""87631d72-17ae-47b4-b907-f7a5115674dc"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateClockwise"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5b4b9dce-7275-410a-97dd-b36a10237efb"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateClockwise"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b632bd9-c0ad-4b1b-ab4f-4bc8dea942c3"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateAntiClockwise"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e7ec8d3-4f1b-4ad9-8c97-fc42dbe270aa"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateAntiClockwise"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -340,6 +402,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Gameplay_MoveY = m_Gameplay.FindAction("MoveY", throwIfNotFound: true);
         m_Gameplay_Pick = m_Gameplay.FindAction("Pick", throwIfNotFound: true);
         m_Gameplay_Cancel = m_Gameplay.FindAction("Cancel", throwIfNotFound: true);
+        m_Gameplay_RotateClockwise = m_Gameplay.FindAction("RotateClockwise", throwIfNotFound: true);
+        m_Gameplay_RotateAntiClockwise = m_Gameplay.FindAction("RotateAntiClockwise", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -405,6 +469,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_MoveY;
     private readonly InputAction m_Gameplay_Pick;
     private readonly InputAction m_Gameplay_Cancel;
+    private readonly InputAction m_Gameplay_RotateClockwise;
+    private readonly InputAction m_Gameplay_RotateAntiClockwise;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
@@ -413,6 +479,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @MoveY => m_Wrapper.m_Gameplay_MoveY;
         public InputAction @Pick => m_Wrapper.m_Gameplay_Pick;
         public InputAction @Cancel => m_Wrapper.m_Gameplay_Cancel;
+        public InputAction @RotateClockwise => m_Wrapper.m_Gameplay_RotateClockwise;
+        public InputAction @RotateAntiClockwise => m_Wrapper.m_Gameplay_RotateAntiClockwise;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -434,6 +502,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @RotateClockwise.started += instance.OnRotateClockwise;
+            @RotateClockwise.performed += instance.OnRotateClockwise;
+            @RotateClockwise.canceled += instance.OnRotateClockwise;
+            @RotateAntiClockwise.started += instance.OnRotateAntiClockwise;
+            @RotateAntiClockwise.performed += instance.OnRotateAntiClockwise;
+            @RotateAntiClockwise.canceled += instance.OnRotateAntiClockwise;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -450,6 +524,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @RotateClockwise.started -= instance.OnRotateClockwise;
+            @RotateClockwise.performed -= instance.OnRotateClockwise;
+            @RotateClockwise.canceled -= instance.OnRotateClockwise;
+            @RotateAntiClockwise.started -= instance.OnRotateAntiClockwise;
+            @RotateAntiClockwise.performed -= instance.OnRotateAntiClockwise;
+            @RotateAntiClockwise.canceled -= instance.OnRotateAntiClockwise;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -482,5 +562,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnMoveY(InputAction.CallbackContext context);
         void OnPick(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnRotateClockwise(InputAction.CallbackContext context);
+        void OnRotateAntiClockwise(InputAction.CallbackContext context);
     }
 }

@@ -21,6 +21,10 @@ public class CharacterMovement : MonoBehaviour
 
     protected GameObject playerGrabbing;
 
+    [Header("Box representation")]
+    public MeshFilter boxMesh;
+    public Mesh[] boxMeshes;
+
 
 
     /// <summary>
@@ -35,6 +39,16 @@ public class CharacterMovement : MonoBehaviour
         SubscribeControls();
     }
     
+
+    public void DisableMovement()
+    {
+        actions.Disable();
+    }
+
+    public void EnableMovement()
+    {
+        actions.Enable();
+    }
 
     /// <summary>
     /// This function is called every fixed framerate frame, if the MonoBehaviour is enabled.
@@ -90,16 +104,27 @@ public class CharacterMovement : MonoBehaviour
                 }
             }
         } 
+        // Try to release
         if(!found && playerGrabbing != null)
         {
             int x,y;
             GameObject hasSomethingInFront = tileSystem.GetCellInFront(transform.position, transform.forward, out x, out y);
-            if(!hasSomethingInFront)
+
+            if(tileSystem.InsideRange(x,y) && hasSomethingInFront == null)
             {
                 Vector3 pos = tileSystem.GetCenterOfCell(x,y);
                 playerGrabbing.transform.position = pos;
                 playerGrabbing.SetActive(true);
+                tileSystem.SetTile(playerGrabbing, x,y);
+                Box box = playerGrabbing.GetComponent<Box>();
+                if(box)
+                {
+                    box.currentX = x;
+                    box.currentY = y;
+                }
+
                 playerGrabbing = null;
+                boxMesh.gameObject.SetActive(false);
             }
 
         }
@@ -109,5 +134,16 @@ public class CharacterMovement : MonoBehaviour
     {
         playerGrabbing = target;
         target.SetActive(false);
+        Box box = target.GetComponent<Box>();
+        if(box)
+        {
+            boxMesh.gameObject.SetActive(true);
+            boxMesh.mesh = boxMeshes[(int)box.pieceType];
+
+            if(box.currentX != -1)
+            {
+                tileSystem.SetTile(null, box.currentX, box.currentY);
+            }
+        }
     }
 }

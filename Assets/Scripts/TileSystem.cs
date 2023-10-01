@@ -48,7 +48,7 @@ public class TileSystem : MonoBehaviour
         x = Mathf.FloorToInt(Xpct * size.x);
         y = Mathf.FloorToInt(Ypct * size.y);
 
-        if(x < 0 || x >= size.x || y < 0 || y > size.y)
+        if(x < 0 || x >= size.x || y < 0 || y >= size.y)
             return false;
         return true;
     }
@@ -81,5 +81,19 @@ public class TileSystem : MonoBehaviour
             return null;
 
         return busyCells[targetPosition.x][targetPosition.y];
+    }
+
+    public void SetTile(GameObject gameObject, int x, int y)
+    {
+        if(x < 0 || x >= size.x || y < 0 || y >= size.y) return;
+
+        busyCells[x][y] = gameObject;
+
+    }
+
+    public bool InsideRange(int x, int y)
+    {
+        if(x < 0 || x >= size.x || y < 0 || y >= size.y) return false;
+        return true;
     }
 }

@@ -14,5 +14,5 @@ public interface IInteractable
 
 public enum InteractionType
 {
-    EmptyHand, BusyHand
+    EmptyHand, BusyHand, Any
 }

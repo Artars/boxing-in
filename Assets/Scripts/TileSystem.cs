@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class TileSystem : MonoBehaviour
 {
     public Transform min;
@@ -11,7 +15,7 @@ public class TileSystem : MonoBehaviour
 
     public MeshRenderer grid;
 
-    protected GameObject[][] busyCells;
+    public GameObject[][] busyCells;
 
     void Start()
     {
@@ -91,9 +95,44 @@ public class TileSystem : MonoBehaviour
 
     }
 
+    public GameObject GetTile(int x, int y)
+    {
+        if(x < 0 || x >= size.x || y < 0 || y >= size.y) return null;
+        return busyCells[x][y];
+    }
+
     public bool InsideRange(int x, int y)
     {
         if(x < 0 || x >= size.x || y < 0 || y >= size.y) return false;
         return true;
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(TileSystem))]
+public class TileEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        TileSystem tile = (TileSystem) target;
+        if(tile.busyCells != null)
+        {
+            GUILayout.BeginVertical();
+            for (int i = 0; i < tile.busyCells.Length; i++)
+            {
+                GUILayout.BeginHorizontal();
+                for (int j = 0; j < tile.busyCells[i].Length; j++)
+                {
+                    GUILayout.Label((tile.busyCells[i][j] == null ? "-" : tile.busyCells[i][j].name.Substring(0,2)));
+                }
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndVertical();
+        }
+
+
+    }
+}
+#endif

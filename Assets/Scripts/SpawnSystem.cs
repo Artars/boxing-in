@@ -17,8 +17,9 @@ public class SpawnSystem : MonoBehaviour
 
     protected List<int> randomSequence = new List<int>();
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return null;
         StartGame();
     }
 

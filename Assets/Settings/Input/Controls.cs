@@ -80,6 +80,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pack"",
+                    ""type"": ""Button"",
+                    ""id"": ""44a5d110-283d-447e-b5d4-e389d7b25279"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -368,6 +377,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""RotateAntiClockwise"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f718bf0-6d23-49d4-9a55-9dc1b4fd4972"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""79f06804-10b2-4aa1-8d25-92d20eeabf16"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -404,6 +435,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Gameplay_Cancel = m_Gameplay.FindAction("Cancel", throwIfNotFound: true);
         m_Gameplay_RotateClockwise = m_Gameplay.FindAction("RotateClockwise", throwIfNotFound: true);
         m_Gameplay_RotateAntiClockwise = m_Gameplay.FindAction("RotateAntiClockwise", throwIfNotFound: true);
+        m_Gameplay_Pack = m_Gameplay.FindAction("Pack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -471,6 +503,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Cancel;
     private readonly InputAction m_Gameplay_RotateClockwise;
     private readonly InputAction m_Gameplay_RotateAntiClockwise;
+    private readonly InputAction m_Gameplay_Pack;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
@@ -481,6 +514,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Cancel => m_Wrapper.m_Gameplay_Cancel;
         public InputAction @RotateClockwise => m_Wrapper.m_Gameplay_RotateClockwise;
         public InputAction @RotateAntiClockwise => m_Wrapper.m_Gameplay_RotateAntiClockwise;
+        public InputAction @Pack => m_Wrapper.m_Gameplay_Pack;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -508,6 +542,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @RotateAntiClockwise.started += instance.OnRotateAntiClockwise;
             @RotateAntiClockwise.performed += instance.OnRotateAntiClockwise;
             @RotateAntiClockwise.canceled += instance.OnRotateAntiClockwise;
+            @Pack.started += instance.OnPack;
+            @Pack.performed += instance.OnPack;
+            @Pack.canceled += instance.OnPack;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -530,6 +567,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @RotateAntiClockwise.started -= instance.OnRotateAntiClockwise;
             @RotateAntiClockwise.performed -= instance.OnRotateAntiClockwise;
             @RotateAntiClockwise.canceled -= instance.OnRotateAntiClockwise;
+            @Pack.started -= instance.OnPack;
+            @Pack.performed -= instance.OnPack;
+            @Pack.canceled -= instance.OnPack;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -564,5 +604,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnCancel(InputAction.CallbackContext context);
         void OnRotateClockwise(InputAction.CallbackContext context);
         void OnRotateAntiClockwise(InputAction.CallbackContext context);
+        void OnPack(InputAction.CallbackContext context);
     }
 }

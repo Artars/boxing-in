@@ -7,7 +7,7 @@ public class Box : MonoBehaviour, IInteractable
 {
     public enum Pieces
     {
-        Z = 0, L, I, J, S, O, T
+        Z = 0, L, I, J, S, O, T, Delivery
     }
     
     public Pieces pieceType;

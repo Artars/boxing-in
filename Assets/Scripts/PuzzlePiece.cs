@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PuzzlePiece : MonoBehaviour
 {
+    [System.Serializable]
     public class Configuration
     {
         public bool[,] validSlot;
@@ -17,9 +18,9 @@ public class PuzzlePiece : MonoBehaviour
 
             validSlot = new bool[dimension.x,dimension.y];
             int counter = 0;
-            for (int x = 0; x < dimension.x; x++)
+            for (int y = 0; y < dimension.y; y++)
             {
-                for (int y = 0; y < dimension.y; y++)
+                for (int x = 0; x < dimension.x; x++)
                 {
                     validSlot[x,y] = states[counter];
                     counter++;
@@ -39,11 +40,13 @@ public class PuzzlePiece : MonoBehaviour
                 for (int oldRow = 0; oldRow < original.validSlot.GetLength(0); oldRow++)
                 {
                     result.validSlot[newRow, newColumn] = original.validSlot[oldRow, oldColumn];
+                    if(oldRow == original.pivot.x && oldRow == original.pivot.y)
+                        result.pivot = new Vector2Int(newRow, newColumn);
                     newColumn++;
                 }
                 newRow++;
             }
-            result.pivot = new Vector2Int(original.pivot.y, original.validSlot.GetLength(0) - original.pivot.x);
+            result.pivot = new Vector2Int(original.dimension.y-1-original.pivot.y,original.pivot.x);
             return result;
         }
         
@@ -57,15 +60,19 @@ public class PuzzlePiece : MonoBehaviour
 
     }
 
+    public Box.Pieces pieceType;
     public bool[] space;
     public Vector2Int size;
     public Vector2Int drawPivot;
 
+    [SerializeField]
     protected Configuration[] configurations = new Configuration[4];
 
     protected int currentConfiguration = 0;
 
     protected int rotation;
+
+    public Vector2Int currentPosition = new Vector2Int(-1,-1);
 
 
     void Start()
@@ -87,7 +94,7 @@ public class PuzzlePiece : MonoBehaviour
         if(currentConfiguration < 0)
             currentConfiguration = 3;
 
-        transform.Rotate(Vector3.up * -90);
+        transform.Rotate(Vector3.up * 90);
     }
     
     public void RotateAnticlockwise()
@@ -96,7 +103,7 @@ public class PuzzlePiece : MonoBehaviour
         if(currentConfiguration > 3)
             currentConfiguration = 0;
 
-        transform.Rotate(Vector3.up * 90);
+        transform.Rotate(Vector3.up * -90);
     }
 
 

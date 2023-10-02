@@ -30,6 +30,12 @@ public class TileSystem : MonoBehaviour
         GetPosition(dTransform.position, out dX, out dY);
     }
 
+    public Vector3 GetScale()
+    {
+        Vector3 direction = max.position - min.position;
+        return new Vector3(direction.x / size.x, 1, direction.z / size.y);;
+    }
+
     public void SetSize(Vector2Int size)
     {
         this.size = size;
@@ -105,6 +111,30 @@ public class TileSystem : MonoBehaviour
     {
         if(x < 0 || x >= size.x || y < 0 || y >= size.y) return false;
         return true;
+    }
+
+    /// <summary>
+    /// Callback to draw gizmos that are pickable and always drawn.
+    /// </summary>
+    void OnDrawGizmos()
+    {
+        Vector3 direction = max.position - min.position;
+        Vector3 scale = new Vector3(direction.x / size.x, 5, direction.z / size.y);
+
+        if(busyCells != null)
+        {
+            for (int i = 0; i < busyCells.Length; i++)
+            {
+                for (int j = 0; j < busyCells[i].Length; j++)
+                {
+                    if(busyCells[i][j] != null)
+                    {
+                        Gizmos.color = Color.red;
+                        Gizmos.DrawCube(GetCenterOfCell(i,j), scale);
+                    }
+                }
+            }
+        }
     }
 }
 

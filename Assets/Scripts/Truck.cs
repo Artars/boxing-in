@@ -17,6 +17,7 @@ public class Truck : MonoBehaviour, IInteractable
 
     public GameObject truckModel;
 
+    public TileSystem mapTile;
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -45,6 +46,8 @@ public class Truck : MonoBehaviour, IInteractable
         int boxIndex = currentElements[0];
         currentElements.RemoveAt(0);
         GameObject newBox = GameObject.Instantiate(prefabs[boxIndex]);
+        if(mapTile != null)
+            newBox.transform.localScale = mapTile.GetScale();
         character.PlayerGrab(newBox);
 
         if(currentElements.Count == 0)

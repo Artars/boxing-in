@@ -55,6 +55,7 @@ MonoBehaviour:
   offsetCheck: 0.5
   grabSize: 0.5
   tileSystem: {fileID: 0}
+  playerGrabbing: {fileID: 0}
   boxMesh: {fileID: 345784551849537908}
   boxMeshes:
   - {fileID: -2432090755550338912, guid: 9d6109c6c0884664fa03d195cdbfb008, type: 3}
@@ -64,6 +65,7 @@ MonoBehaviour:
   - {fileID: -2432090755550338912, guid: 4c3b38c753789774a9ba7d109f88f141, type: 3}
   - {fileID: -2432090755550338912, guid: 1e6e5361d94ff6847b1394d369342b40, type: 3}
   - {fileID: -2432090755550338912, guid: 327bb8e7f92a47840a13c8b3a9d6fb7f, type: 3}
+  - {fileID: -2432090755550338912, guid: 36a681b35999b874ea92bee778548472, type: 3}
 --- !u!54 &1276608536503557771
 Rigidbody:
   m_ObjectHideFlags: 0

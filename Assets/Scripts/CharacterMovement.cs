@@ -19,7 +19,7 @@ public class CharacterMovement : MonoBehaviour
 
     protected Rigidbody rgbd;
 
-    protected GameObject playerGrabbing;
+    public GameObject playerGrabbing;
 
     [Header("Box representation")]
     public MeshFilter boxMesh;
@@ -96,7 +96,7 @@ public class CharacterMovement : MonoBehaviour
             {
                 IInteractable interactable = buffer[i].collider.GetComponentInParent<IInteractable>();
                 if(interactable != null && 
-                ( (interactable.InteractionType == InteractionType.BusyHand) == (playerGrabbing != null) ) )
+                ( (interactable.InteractionType == InteractionType.BusyHand) == (playerGrabbing != null) || interactable.InteractionType == InteractionType.Any) )
                 {
                     interactable.TryToInteract(this);
                     found = true;
@@ -133,17 +133,25 @@ public class CharacterMovement : MonoBehaviour
     public void PlayerGrab(GameObject target)
     {
         playerGrabbing = target;
-        target.SetActive(false);
-        Box box = target.GetComponent<Box>();
-        if(box)
-        {
-            boxMesh.gameObject.SetActive(true);
-            boxMesh.mesh = boxMeshes[(int)box.pieceType];
 
-            if(box.currentX != -1)
+        if(target != null)
+        {
+            target.SetActive(false);
+            Box box = target.GetComponent<Box>();
+            if(box)
             {
-                tileSystem.SetTile(null, box.currentX, box.currentY);
+                boxMesh.gameObject.SetActive(true);
+                boxMesh.mesh = boxMeshes[(int)box.pieceType];
+
+                if(box.currentX != -1)
+                {
+                    tileSystem.SetTile(null, box.currentX, box.currentY);
+                }
             }
+        }
+        else
+        {
+            boxMesh.gameObject.SetActive(false);
         }
     }
 }

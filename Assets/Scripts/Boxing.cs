@@ -2,14 +2,25 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Boxing : MonoBehaviour, IInteractable
 {
-    public InteractionType InteractionType => InteractionType.Any;
+    public InteractionType InteractionType
+    {
+        get
+        {
+            if(grabbed != null)
+                return InteractionType.EmptyHand;
+            else
+                return InteractionType.Any;
+        }
+    }
     public TileSystem tileSystem;
+    public TileSystem mapTiles;
     Controls actions;
 
     public Transform cursor;
@@ -22,6 +33,7 @@ public class Boxing : MonoBehaviour, IInteractable
     public Vector3 offsetWhenGrabbing = Vector3.up;
 
     public GameObject[] piecesPrefabs;
+    public GameObject[] boxesPrefabs;
 
     protected bool menuOpen;
 
@@ -39,11 +51,36 @@ public class Boxing : MonoBehaviour, IInteractable
         actions.Gameplay.Pick.performed += OnPick;
         actions.Gameplay.RotateClockwise.performed += OnRotateClock;
         actions.Gameplay.RotateAntiClockwise.performed += OnRotateAntiClock;
+        actions.Gameplay.Pack.performed += OnPack;
     }
 
     public void TryToInteract(CharacterMovement character)
     {
+        if(character.playerGrabbing != null)
+        {
+            Box box = character.playerGrabbing.GetComponent<Box>();
+            if(box.pieceType == Box.Pieces.Delivery)
+                return;
+            onHand = CreatePiece(box);
+            character.PlayerGrab(null);
+            positionFloat.x = tileSystem.size.x+.5f;
+            UpdateCursorPosition();
+        }
+        else
+        {
+            positionFloat = Vector3.zero;
+            UpdateCursorPosition();
+        }
         OpenMenu();
+    }
+
+    protected PuzzlePiece CreatePiece(Box box)
+    {
+        GameObject newPiece = GameObject.Instantiate(piecesPrefabs[(int)box.pieceType], offPosition.position, Quaternion.identity);
+        newPiece.transform.localScale = tileSystem.GetScale();
+
+        PuzzlePiece piece = newPiece.GetComponent<PuzzlePiece>();
+        return piece;
     }
 
     public void OpenMenu()
@@ -55,6 +92,14 @@ public class Boxing : MonoBehaviour, IInteractable
 
     void OnCancel(InputAction.CallbackContext context)
     {
+        if(onHand != null)
+        {
+            GameObject newBox = GameObject.Instantiate(boxesPrefabs[(int)onHand.pieceType]);
+            newBox.transform.localScale = mapTiles.GetScale();
+            Player.instance.characterMovement.PlayerGrab(newBox);
+            Destroy(onHand.gameObject);
+            onHand = null;
+        }
         CloseMenu();
     }
 
@@ -78,19 +123,29 @@ public class Boxing : MonoBehaviour, IInteractable
                 if(onTile != null)
                 {
                     grabbed = onTile.GetComponent<PuzzlePiece>();
-                    FillTiles(currentX, currentY, grabbed, null);
+                    positionFloat = grabbed.currentPosition;
+                    FillTiles(grabbed.currentPosition.x, grabbed.currentPosition.y, grabbed, null);
+                    UpdateCursorPosition();
                 }
             }
         }
         else
         {
-            if(CheckPositionAvailableWithPiece(currentX,currentY, grabbed))
+            if(onHand == null && positionFloat.x >= tileSystem.size.x)
+            {
+                grabbed.transform.position = offPosition.position;
+                onHand = grabbed;
+                grabbed = null; 
+            }
+            else if(CheckPositionAvailableWithPiece(currentX,currentY, grabbed))
             {
                 FillTiles(currentX, currentY, grabbed, grabbed.gameObject);
+                grabbed.currentPosition = new Vector2Int(currentX, currentY);
                 grabbed.transform.position = cursor.position - offsetWhenGrabbing;
                 grabbed = null;
             }
         }
+        UpdateCursorPosition();
     }
 
     protected bool CheckPositionAvailableWithPiece(int x, int y, PuzzlePiece piece)
@@ -107,7 +162,7 @@ public class Boxing : MonoBehaviour, IInteractable
                 if(currentY < 0 || currentY >= tileSystem.size.y)
                     return false;
                 
-                if(tileSystem.GetTile(currentX,currentY) != null)
+                if(configuration.validSlot[i,j] == true && tileSystem.GetTile(currentX,currentY) != null)
                 {
                     return false;
                 }
@@ -127,7 +182,7 @@ public class Boxing : MonoBehaviour, IInteractable
             for (int j = 0; j < configuration.dimension.y; j++)
             {
                 int currentY = y + j - configuration.pivot.y;
-                if(currentY < 0 || currentY >= tileSystem.size.y)
+                if(currentY < 0 || currentY >= tileSystem.size.y || configuration.validSlot[i,j] == false)
                     continue;
                 
                 tileSystem.SetTile(value,currentX,currentY);
@@ -145,8 +200,37 @@ public class Boxing : MonoBehaviour, IInteractable
 
     void OnRotateAntiClock(InputAction.CallbackContext context)
     {
+        if(grabbed != null)
         {
             grabbed.RotateAnticlockwise();
+        }
+    }
+
+    void OnPack(InputAction.CallbackContext context)
+    {
+        if(onHand == null && grabbed == null)
+        {
+            GameObject newBox = GameObject.Instantiate(boxesPrefabs[(int)Box.Pieces.Delivery]);
+            newBox.transform.localScale = mapTiles.GetScale();
+            Player.instance.characterMovement.PlayerGrab(newBox);
+
+            ClearBoard();
+            CloseMenu();
+        }
+    }
+
+    protected void ClearBoard()
+    {
+        for (int i = 0; i < tileSystem.size.x; i++)
+        {
+            for (int j = 0; j < tileSystem.size.y; j++)
+            {
+                if(tileSystem.busyCells[i][j] != null)
+                {
+                    DestroyImmediate(tileSystem.busyCells[i][j]);
+                    tileSystem.busyCells[i][j] = null;
+                }
+            }
         }
     }
 
@@ -189,6 +273,11 @@ public class Boxing : MonoBehaviour, IInteractable
         else
         {
             cursor.position = tileSystem.GetCenterOfCell(Mathf.FloorToInt(positionFloat.x),Mathf.FloorToInt(positionFloat.y))+ offset;
+        }
+
+        if(grabbed != null)
+        {
+            grabbed.transform.position = cursor.position;
         }
     }
 

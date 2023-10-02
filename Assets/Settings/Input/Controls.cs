@@ -89,6 +89,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveUI"",
+                    ""type"": ""Value"",
+                    ""id"": ""1e20ef2e-33dd-45e5-aa20-c7bf4845ff66"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -399,6 +408,171 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Pack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""1f509450-013f-440e-8b4e-88a7092cd139"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""7d47bc74-b64e-4788-a676-90112b6ea771"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""13240f3d-b46a-4185-a1c3-4fc876066cb8"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""6ceff9aa-bbb3-4ec7-9504-551f087bb207"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ced41b53-668a-4a8d-913e-87abcf87e907"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""KeyboardArrows"",
+                    ""id"": ""311fa5ce-f4c4-4edc-978c-37d90f165876"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""704832c2-65e0-407c-bd4f-d214c1f055cc"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""d8b54766-a0ce-4256-9f52-5a188a16dd6b"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""cf63b60b-4681-4239-b0a9-071fa964a613"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""bd50ab04-b395-4b73-9343-31ad804de8cc"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Gamepad"",
+                    ""id"": ""aff8679c-d0b2-4bf6-b7f2-ad3ea89d1903"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""e8eb545b-2e53-467b-983d-ff7aa7245d39"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""2f164063-3980-463e-aa09-4bd7ec65725e"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""a37ddee9-ce47-4de6-9f8a-40ea84e32314"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""10c94d45-3987-4103-9ce5-926924e50ac8"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -436,6 +610,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Gameplay_RotateClockwise = m_Gameplay.FindAction("RotateClockwise", throwIfNotFound: true);
         m_Gameplay_RotateAntiClockwise = m_Gameplay.FindAction("RotateAntiClockwise", throwIfNotFound: true);
         m_Gameplay_Pack = m_Gameplay.FindAction("Pack", throwIfNotFound: true);
+        m_Gameplay_MoveUI = m_Gameplay.FindAction("MoveUI", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -504,6 +679,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_RotateClockwise;
     private readonly InputAction m_Gameplay_RotateAntiClockwise;
     private readonly InputAction m_Gameplay_Pack;
+    private readonly InputAction m_Gameplay_MoveUI;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
@@ -515,6 +691,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @RotateClockwise => m_Wrapper.m_Gameplay_RotateClockwise;
         public InputAction @RotateAntiClockwise => m_Wrapper.m_Gameplay_RotateAntiClockwise;
         public InputAction @Pack => m_Wrapper.m_Gameplay_Pack;
+        public InputAction @MoveUI => m_Wrapper.m_Gameplay_MoveUI;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -545,6 +722,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Pack.started += instance.OnPack;
             @Pack.performed += instance.OnPack;
             @Pack.canceled += instance.OnPack;
+            @MoveUI.started += instance.OnMoveUI;
+            @MoveUI.performed += instance.OnMoveUI;
+            @MoveUI.canceled += instance.OnMoveUI;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -570,6 +750,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Pack.started -= instance.OnPack;
             @Pack.performed -= instance.OnPack;
             @Pack.canceled -= instance.OnPack;
+            @MoveUI.started -= instance.OnMoveUI;
+            @MoveUI.performed -= instance.OnMoveUI;
+            @MoveUI.canceled -= instance.OnMoveUI;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -605,5 +788,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnRotateClockwise(InputAction.CallbackContext context);
         void OnRotateAntiClockwise(InputAction.CallbackContext context);
         void OnPack(InputAction.CallbackContext context);
+        void OnMoveUI(InputAction.CallbackContext context);
     }
 }

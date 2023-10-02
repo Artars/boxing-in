@@ -8,6 +8,8 @@ using UnityEngine.Tilemaps;
 
 public class CharacterMovement : MonoBehaviour
 {
+
+    public bool startsPlaying = false;
     Controls actions;
     public float rotationSmoothness = 2;
     public float speed = 1;
@@ -25,6 +27,8 @@ public class CharacterMovement : MonoBehaviour
     public MeshFilter boxMesh;
     public Mesh[] boxMeshes;
 
+    public GameObject[] playerModels;
+
 
 
     /// <summary>
@@ -34,11 +38,22 @@ public class CharacterMovement : MonoBehaviour
     void Start()
     {
         actions = new Controls();
-        actions.Enable();
         rgbd = GetComponent<Rigidbody>();
         SubscribeControls();
+        SetPlayerModel(-1);
+
+        if(startsPlaying)
+            EnableMovement();
     }
-    
+
+    public void SetPlayerModel(int index)
+    {
+        for (int i = 0; i < playerModels.Length; i++)
+        {
+            if(playerModels != null)
+                playerModels[i].SetActive(i == index);
+        }
+    }    
 
     public void DisableMovement()
     {
@@ -48,6 +63,7 @@ public class CharacterMovement : MonoBehaviour
     public void EnableMovement()
     {
         actions.Enable();
+        SetPlayerModel(0);
     }
 
     /// <summary>
@@ -125,6 +141,7 @@ public class CharacterMovement : MonoBehaviour
 
                 playerGrabbing = null;
                 boxMesh.gameObject.SetActive(false);
+                SetPlayerModel(0);
             }
 
         }
@@ -148,10 +165,14 @@ public class CharacterMovement : MonoBehaviour
                     tileSystem.SetTile(null, box.currentX, box.currentY);
                 }
             }
+
+            AudioManager.instance.PlaySound("GrabBox");
         }
         else
         {
             boxMesh.gameObject.SetActive(false);
         }
+
+        SetPlayerModel((playerGrabbing == null) ? 0 : 1);
     }
 }

@@ -19,6 +19,8 @@ public class Box : MonoBehaviour, IInteractable
     public int currentX = -1;
     public int currentY = -1;
 
+    public float points = 0;
+
     void Start()
     {
         SetBottomColor(bottomColor);

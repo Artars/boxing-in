@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
@@ -19,6 +20,8 @@ public class Truck : MonoBehaviour, IInteractable
 
     public TileSystem mapTile;
 
+    protected float counter;
+
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
     /// any of the Update methods is called the first time.
@@ -34,11 +37,28 @@ public class Truck : MonoBehaviour, IInteractable
         truckModel.SetActive(true);
         Visible = true;
         currentElements = boxes;
+        counter = expireTime;
+        AudioManager.instance.PlaySound("Truck");
+    }
+
+    void Update()
+    {
+        if(Visible)
+        {
+            counter -= Time.deltaTime;
+            if(counter <= 0)
+            {
+                Player.instance.AddFault();
+                Disapear();
+            }
+        }
     }
 
     public void Disapear()
     {
         truckModel.SetActive(false);
+        Visible = false;
+        currentElements.Clear();
     }
 
     public void TryToInteract(CharacterMovement character)

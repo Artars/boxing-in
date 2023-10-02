@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SpawnSystem : MonoBehaviour
 {
+    public bool startsPlaying = false;
     public int numberOfPieces;
     public Truck[] trucks;
 
@@ -20,11 +21,19 @@ public class SpawnSystem : MonoBehaviour
     IEnumerator Start()
     {
         yield return null;
-        StartGame();
+        if(startsPlaying)
+            StartGame();
     }
 
-    void StartGame()
+    public void StartGame()
     {
+        if(Player.instance != null)
+        {
+            boxesPerTruck = Player.instance.gameParameters.piecesPerTruck;
+            randomMinTime = Player.instance.gameParameters.truckSpawnMin;
+            randomMaxTime = Player.instance.gameParameters.truckSpawnMax;
+            truckExpireTime = Player.instance.gameParameters.truckDisapearTime;
+        }
         MakeNextTruckAppear();
     }
 

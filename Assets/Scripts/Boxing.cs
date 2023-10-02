@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Boxing : MonoBehaviour, IInteractable
 {
@@ -43,6 +44,14 @@ public class Boxing : MonoBehaviour, IInteractable
 
     protected PuzzlePiece onHand;
 
+    public Slider slider;
+    public Slider sliderBackground;
+    public GameObject canPack;
+
+    public GameObject openCursor;
+    public GameObject closedCursor;
+
+    protected bool canDeliver;
 
     void Start()
     {
@@ -136,6 +145,7 @@ public class Boxing : MonoBehaviour, IInteractable
                 grabbed.transform.position = offPosition.position;
                 onHand = grabbed;
                 grabbed = null; 
+                AudioManager.instance.PlaySound("Put");
             }
             else if(CheckPositionAvailableWithPiece(currentX,currentY, grabbed))
             {
@@ -143,9 +153,12 @@ public class Boxing : MonoBehaviour, IInteractable
                 grabbed.currentPosition = new Vector2Int(currentX, currentY);
                 grabbed.transform.position = cursor.position - offsetWhenGrabbing;
                 grabbed = null;
+                AudioManager.instance.PlaySound("Put");
+                
             }
         }
         UpdateCursorPosition();
+        UpdatePorcentage();
     }
 
     protected bool CheckPositionAvailableWithPiece(int x, int y, PuzzlePiece piece)
@@ -190,11 +203,32 @@ public class Boxing : MonoBehaviour, IInteractable
         }
     }
 
+    protected void UpdatePorcentage()
+    {
+        float total = tileSystem.size.x * tileSystem.size.y;
+        int counter = 0;
+        for (int i = 0; i < tileSystem.busyCells.Length; i++)
+        {
+            for (int j = 0; j < tileSystem.busyCells[i].Length; j++)
+            {
+                if(tileSystem.busyCells[i][j] != null)
+                    counter++;
+            }
+        }
+
+        float pct = counter/total;
+        slider.value = pct;
+        sliderBackground.value = Player.instance.gameParameters.fillPorcentage;
+        canDeliver = pct > Player.instance.gameParameters.fillPorcentage;
+        canPack.SetActive(canDeliver);
+    }
+
     void OnRotateClock(InputAction.CallbackContext context)
     {
         if(grabbed != null)
         {
             grabbed.RotateClockwise();
+            AudioManager.instance.PlaySound("ChangeDirection");
         }
     }
 
@@ -203,19 +237,25 @@ public class Boxing : MonoBehaviour, IInteractable
         if(grabbed != null)
         {
             grabbed.RotateAnticlockwise();
+            AudioManager.instance.PlaySound("ChangeDirection");
         }
     }
 
     void OnPack(InputAction.CallbackContext context)
     {
-        if(onHand == null && grabbed == null)
+        if(canDeliver && onHand == null && grabbed == null)
         {
+            UpdatePorcentage();
             GameObject newBox = GameObject.Instantiate(boxesPrefabs[(int)Box.Pieces.Delivery]);
             newBox.transform.localScale = mapTiles.GetScale();
+            Box box = newBox.GetComponent<Box>();
+            float t = Mathf.InverseLerp(Player.instance.gameParameters.fillPorcentage,1,slider.value);
+            box.points = Mathf.Lerp(Player.instance.gameParameters.minPoints,Player.instance.gameParameters.minPoints,t);
             Player.instance.characterMovement.PlayerGrab(newBox);
 
             ClearBoard();
             CloseMenu();
+            UpdatePorcentage();
         }
     }
 
@@ -279,6 +319,9 @@ public class Boxing : MonoBehaviour, IInteractable
         {
             grabbed.transform.position = cursor.position;
         }
+
+        openCursor.SetActive(grabbed == null);
+        closedCursor.SetActive(grabbed != null);
     }
 
 }

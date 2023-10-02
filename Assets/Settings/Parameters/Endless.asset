@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb435f119582a41489c9787480b76563, type: 3}
+  m_Name: Endless
+  m_EditorClassIdentifier: 
+  stageName: Endless
+  description: Try and go as far as you can without making any failure.
+  truckSpawnMin: 10
+  truckSpawnMax: 20
+  piecesPerTruck: 3
+  truckDisapearTime: 20
+  fillPorcentage: 0.6
+  minPoints: 50
+  maxPoints: 100
+  faultTruck: 80
+  maxTrucksFaults: 3
+  maxTime: Infinity

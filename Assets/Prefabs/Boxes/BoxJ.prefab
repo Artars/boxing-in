@@ -33,6 +33,11 @@ PrefabInstance:
       propertyPath: bottomColor.r
       value: 0.37254903
       objectReference: {fileID: 0}
+    - target: {fileID: 3576490927543384422, guid: f7e40df47a0834e4ab4f6fea5e334b3d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8059862162511657887, guid: f7e40df47a0834e4ab4f6fea5e334b3d,
         type: 3}
       propertyPath: m_RootOrder

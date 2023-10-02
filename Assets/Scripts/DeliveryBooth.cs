@@ -13,8 +13,10 @@ public class DeliveryBooth : MonoBehaviour, IInteractable
 
         if(box.pieceType == Box.Pieces.Delivery)
         {
+            Player.instance.AddPoints(box.points);
             character.PlayerGrab(null);
             Destroy(box.gameObject);
+            AudioManager.instance.PlaySound("BoxDelivered");
         }
     }
 

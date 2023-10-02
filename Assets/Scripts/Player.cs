@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
         spawnSystem.StartGame();
         ChangeToGame();
         AudioManager.instance.SwitchMusicToGameplay();
+        gamePlaying = true;
     }
 
     public void ChangeToBoxing()
@@ -103,6 +104,7 @@ public class Player : MonoBehaviour
 
     public void GameOver(bool win)
     {
+        finalScreen.gameObject.SetActive(true);
         finalScreen.SetFinalScreen(win, totalPoints, timeCounter);
         characterMovement.DisableMovement();
         cameraTransform.position = cameraPosPlaying.position;

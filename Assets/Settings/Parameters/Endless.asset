@@ -22,5 +22,5 @@ MonoBehaviour:
   minPoints: 50
   maxPoints: 100
   faultTruck: 80
-  maxTrucksFaults: 3
+  maxTrucksFaults: 1
   maxTime: Infinity

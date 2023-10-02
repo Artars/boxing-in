@@ -49,6 +49,7 @@ public class Truck : MonoBehaviour, IInteractable
             if(counter <= 0)
             {
                 Player.instance.AddFault();
+                AudioManager.instance.PlaySound("Fail");
                 Disapear();
             }
         }

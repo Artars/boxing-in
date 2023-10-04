@@ -17,10 +17,10 @@ MonoBehaviour:
   truckSpawnMin: 10
   truckSpawnMax: 30
   piecesPerTruck: 3
-  truckDisapearTime: 40
+  truckDisapearTime: 35
   fillPorcentage: 0.6
   minPoints: 50
   maxPoints: 100
-  faultTruck: 80
+  faultTruck: 50
   maxTrucksFaults: 3
   maxTime: 240

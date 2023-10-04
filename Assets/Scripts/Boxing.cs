@@ -74,11 +74,13 @@ public class Boxing : MonoBehaviour, IInteractable
             character.PlayerGrab(null);
             positionFloat.x = tileSystem.size.x+.5f;
             UpdateCursorPosition();
+            UpdatePorcentage();
         }
         else
         {
             positionFloat = Vector3.zero;
             UpdateCursorPosition();
+            UpdatePorcentage();
         }
         OpenMenu();
     }
@@ -101,6 +103,7 @@ public class Boxing : MonoBehaviour, IInteractable
 
     void OnCancel(InputAction.CallbackContext context)
     {
+        if(grabbed != null) return;
         if(onHand != null)
         {
             GameObject newBox = GameObject.Instantiate(boxesPrefabs[(int)onHand.pieceType]);
@@ -250,7 +253,7 @@ public class Boxing : MonoBehaviour, IInteractable
             newBox.transform.localScale = mapTiles.GetScale();
             Box box = newBox.GetComponent<Box>();
             float t = Mathf.InverseLerp(Player.instance.gameParameters.fillPorcentage,1,slider.value);
-            box.points = Mathf.Lerp(Player.instance.gameParameters.minPoints,Player.instance.gameParameters.minPoints,t);
+            box.points = Mathf.Lerp(Player.instance.gameParameters.minPoints,Player.instance.gameParameters.maxPoints,t);
             Player.instance.characterMovement.PlayerGrab(newBox);
 
             ClearBoard();
@@ -287,9 +290,22 @@ public class Boxing : MonoBehaviour, IInteractable
             Vector2 direction = new Vector2(actions.Gameplay.MoveX.ReadValue<float>(),actions.Gameplay.MoveY.ReadValue<float>());
             if(direction.sqrMagnitude > .1f)
             {
-                positionFloat += direction*speed*Time.deltaTime;
+                if(actions.Gameplay.MoveX.WasPressedThisFrame())
+                {
+                    positionFloat += Vector2.right * (actions.Gameplay.MoveX.ReadValue<float>() * .5f);
+                }
+                else if(actions.Gameplay.MoveY.WasPressedThisFrame())
+                {
+                    positionFloat += Vector2.up * (actions.Gameplay.MoveY.ReadValue<float>() * .5f);
+                }
+                else
+                {
+                    positionFloat += direction*speed*Time.deltaTime;
+                }
+
+                
                 if(positionFloat.x > tileSystem.size.x+1)
-                    positionFloat.x = tileSystem.size.x;
+                    positionFloat.x = tileSystem.size.x+.1f;
                 else if(positionFloat.x < 0)
                     positionFloat.x = 0;
 

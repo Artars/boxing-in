@@ -98,6 +98,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Mouse"",
+                    ""type"": ""Value"",
+                    ""id"": ""5a1e81f4-f8ec-4e5d-a72b-f01b20be47e1"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PointerClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""95b8722b-894d-4a21-97d9-7ac3ccad1626"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -573,6 +591,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""MoveUI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e2bc247-8ae0-48ea-9251-9f0e0da7ef4d"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f997f28-7176-4923-a3cd-8eb83bf0bd15"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointerClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -611,6 +651,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Gameplay_RotateAntiClockwise = m_Gameplay.FindAction("RotateAntiClockwise", throwIfNotFound: true);
         m_Gameplay_Pack = m_Gameplay.FindAction("Pack", throwIfNotFound: true);
         m_Gameplay_MoveUI = m_Gameplay.FindAction("MoveUI", throwIfNotFound: true);
+        m_Gameplay_Mouse = m_Gameplay.FindAction("Mouse", throwIfNotFound: true);
+        m_Gameplay_PointerClick = m_Gameplay.FindAction("PointerClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -680,6 +722,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_RotateAntiClockwise;
     private readonly InputAction m_Gameplay_Pack;
     private readonly InputAction m_Gameplay_MoveUI;
+    private readonly InputAction m_Gameplay_Mouse;
+    private readonly InputAction m_Gameplay_PointerClick;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
@@ -692,6 +736,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @RotateAntiClockwise => m_Wrapper.m_Gameplay_RotateAntiClockwise;
         public InputAction @Pack => m_Wrapper.m_Gameplay_Pack;
         public InputAction @MoveUI => m_Wrapper.m_Gameplay_MoveUI;
+        public InputAction @Mouse => m_Wrapper.m_Gameplay_Mouse;
+        public InputAction @PointerClick => m_Wrapper.m_Gameplay_PointerClick;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -725,6 +771,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @MoveUI.started += instance.OnMoveUI;
             @MoveUI.performed += instance.OnMoveUI;
             @MoveUI.canceled += instance.OnMoveUI;
+            @Mouse.started += instance.OnMouse;
+            @Mouse.performed += instance.OnMouse;
+            @Mouse.canceled += instance.OnMouse;
+            @PointerClick.started += instance.OnPointerClick;
+            @PointerClick.performed += instance.OnPointerClick;
+            @PointerClick.canceled += instance.OnPointerClick;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -753,6 +805,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @MoveUI.started -= instance.OnMoveUI;
             @MoveUI.performed -= instance.OnMoveUI;
             @MoveUI.canceled -= instance.OnMoveUI;
+            @Mouse.started -= instance.OnMouse;
+            @Mouse.performed -= instance.OnMouse;
+            @Mouse.canceled -= instance.OnMouse;
+            @PointerClick.started -= instance.OnPointerClick;
+            @PointerClick.performed -= instance.OnPointerClick;
+            @PointerClick.canceled -= instance.OnPointerClick;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -789,5 +847,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnRotateAntiClockwise(InputAction.CallbackContext context);
         void OnPack(InputAction.CallbackContext context);
         void OnMoveUI(InputAction.CallbackContext context);
+        void OnMouse(InputAction.CallbackContext context);
+        void OnPointerClick(InputAction.CallbackContext context);
     }
 }

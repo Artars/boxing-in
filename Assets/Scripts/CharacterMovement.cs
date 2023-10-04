@@ -50,7 +50,7 @@ public class CharacterMovement : MonoBehaviour
     {
         for (int i = 0; i < playerModels.Length; i++)
         {
-            if(playerModels != null)
+            if(playerModels[i] != null)
                 playerModels[i].SetActive(i == index);
         }
     }    
@@ -63,7 +63,6 @@ public class CharacterMovement : MonoBehaviour
     public void EnableMovement()
     {
         actions.Enable();
-        SetPlayerModel(0);
     }
 
     /// <summary>
